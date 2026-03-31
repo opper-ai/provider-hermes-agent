@@ -63,6 +63,7 @@ _API_KEY_PROVIDER_AUX_MODELS: Dict[str, str] = {
     "opencode-zen": "gemini-3-flash",
     "opencode-go": "glm-5",
     "kilocode": "google/gemini-3-flash-preview",
+    "opper": "google/gemini-2.5-flash",
 }
 
 # OpenRouter app attribution headers
@@ -528,6 +529,11 @@ def _resolve_api_key_provider() -> Tuple[Optional[OpenAI], Optional[str]]:
             from hermes_cli.models import copilot_default_headers
 
             extra["default_headers"] = copilot_default_headers()
+        elif provider_id == "opper" or "api.opper.ai" in base_url.lower():
+            extra["default_headers"] = {
+                "User-Agent": "opper-hermes",
+                "X-Opper-Name": "hermes",
+            }
         return OpenAI(api_key=api_key, base_url=base_url, **extra), model
 
     return None, None

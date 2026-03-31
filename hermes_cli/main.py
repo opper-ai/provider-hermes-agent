@@ -861,6 +861,7 @@ def cmd_model(args):
         "kilocode": "Kilo Code",
         "alibaba": "Alibaba Cloud (DashScope)",
         "huggingface": "Hugging Face",
+        "opper": "Opper",
         "custom": "Custom endpoint",
     }
     active_label = provider_labels.get(active, active)
@@ -888,6 +889,7 @@ def cmd_model(args):
         ("ai-gateway", "AI Gateway (Vercel — 200+ models, pay-per-use)"),
         ("alibaba", "Alibaba Cloud / DashScope Coding (Qwen + multi-provider)"),
         ("huggingface", "Hugging Face Inference Providers (20+ open models)"),
+        ("opper", "Opper (Opper AI — API key)"),
     ]
 
     # Add user-defined custom providers from config.yaml
@@ -3647,7 +3649,7 @@ For more help on a command:
     )
     chat_parser.add_argument(
         "--provider",
-        choices=["auto", "openrouter", "nous", "openai-codex", "copilot-acp", "copilot", "anthropic", "huggingface", "zai", "kimi-coding", "minimax", "minimax-cn", "kilocode"],
+        choices=["auto", "openrouter", "nous", "openai-codex", "copilot-acp", "copilot", "anthropic", "huggingface", "zai", "kimi-coding", "minimax", "minimax-cn", "kilocode", "opper"],
         default=None,
         help="Inference provider (default: auto)"
     )

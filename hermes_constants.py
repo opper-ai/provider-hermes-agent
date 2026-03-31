@@ -83,6 +83,10 @@ OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
 OPENROUTER_MODELS_URL = f"{OPENROUTER_BASE_URL}/models"
 OPENROUTER_CHAT_URL = f"{OPENROUTER_BASE_URL}/chat/completions"
 
+OPPER_BASE_URL = "https://api.opper.ai/v3/compat"
+OPPER_MODELS_URL = f"{OPPER_BASE_URL}/models"
+OPPER_CHAT_URL = f"{OPPER_BASE_URL}/chat/completions"
+
 AI_GATEWAY_BASE_URL = "https://ai-gateway.vercel.sh/v1"
 AI_GATEWAY_MODELS_URL = f"{AI_GATEWAY_BASE_URL}/models"
 AI_GATEWAY_CHAT_URL = f"{AI_GATEWAY_BASE_URL}/chat/completions"

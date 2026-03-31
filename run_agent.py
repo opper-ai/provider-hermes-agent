@@ -825,6 +825,11 @@ class AIAgent:
                     client_kwargs["default_headers"] = {
                         "User-Agent": "KimiCLI/1.3",
                     }
+                elif self.provider == "opper" or "api.opper.ai" in effective_base.lower():
+                    client_kwargs["default_headers"] = {
+                        "User-Agent": "opper-hermes",
+                        "X-Opper-Name": "hermes-turn",
+                    }
             else:
                 # No explicit creds — use the centralized provider router
                 from agent.auxiliary_client import resolve_provider_client
