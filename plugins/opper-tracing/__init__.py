@@ -31,8 +31,25 @@ def _api_root() -> str:
     return "https://api.opper.ai"
 
 
+def _tracing_enabled() -> bool:
+    """Check if Opper tracing is enabled via config.yaml (providers.opper.tracing)."""
+    try:
+        from hermes_cli.config import load_config
+        config = load_config()
+        providers = config.get("providers", {})
+        if isinstance(providers, dict):
+            opper_cfg = providers.get("opper", {})
+            if isinstance(opper_cfg, dict):
+                return bool(opper_cfg.get("tracing", False))
+    except Exception:
+        pass
+    return False
+
+
 def _is_opper() -> bool:
     if not _api_key():
+        return False
+    if not _tracing_enabled():
         return False
     try:
         from hermes_cli.runtime_provider import resolve_runtime_provider
@@ -81,6 +98,7 @@ def _on_session_start(session_id: str = "", **_: Any) -> None:
 def _on_pre_llm_call(session_id: str = "", **_: Any) -> dict | None:
     span = _session_spans.get(session_id)
     if not span:
+        logger.debug("opper-tracing: pre_llm_call no session span for %s", session_id)
         return None
     headers: dict[str, str] = {"X-Opper-Parent-Span-Id": span["id"]}
     if span.get("trace_id"):
@@ -114,16 +132,18 @@ def _create_span(name: str, input_text: str, parent_id: str = "") -> dict[str, A
     if parent_id:
         body["parent_id"] = parent_id
     try:
+        url = f"{_api_root()}/v2/spans"
         resp = httpx.post(
-            f"{_api_root()}/v2/spans",
+            url,
             json=body,
             headers={"Authorization": f"Bearer {_api_key()}"},
             timeout=5.0,
         )
         if resp.status_code in (200, 201):
-            return resp.json().get("data", {})
+            body = resp.json()
+            return body.get("data") or body
     except Exception as exc:
-        logger.debug("opper-tracing: create_span failed: %s", exc)
+        print(f"[opper-tracing] create_span error: {exc}")
     return None
 
 
