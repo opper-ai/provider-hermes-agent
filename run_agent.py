@@ -3791,6 +3791,9 @@ class AIAgent:
                     result["response"] = self._anthropic_messages_create(api_kwargs)
                 else:
                     request_client_holder["client"] = self._create_request_openai_client(reason="chat_completion_request")
+                    plugin_headers = getattr(self, "_plugin_turn_headers", None)
+                    if plugin_headers:
+                        api_kwargs["extra_headers"] = {**api_kwargs.get("extra_headers", {}), **plugin_headers}
                     result["response"] = request_client_holder["client"].chat.completions.create(**api_kwargs)
             except Exception as e:
                 result["error"] = e
@@ -3928,6 +3931,9 @@ class AIAgent:
             import httpx as _httpx
             _base_timeout = float(os.getenv("HERMES_API_TIMEOUT", 1800.0))
             _stream_read_timeout = float(os.getenv("HERMES_STREAM_READ_TIMEOUT", 60.0))
+            plugin_headers = getattr(self, "_plugin_turn_headers", None)
+            if plugin_headers:
+                api_kwargs["extra_headers"] = {**api_kwargs.get("extra_headers", {}), **plugin_headers}
             stream_kwargs = {
                 **api_kwargs,
                 "stream": True,
@@ -6246,6 +6252,8 @@ class AIAgent:
         # that will be appended to the ephemeral system prompt for every
         # API call in this turn (not persisted to session DB or cache).
         _plugin_turn_context = ""
+        _plugin_turn_headers: dict = {}
+        self._plugin_turn_headers = None
         try:
             from hermes_cli.plugins import invoke_hook as _invoke_hook
             _pre_results = _invoke_hook(
@@ -6259,14 +6267,18 @@ class AIAgent:
             )
             _ctx_parts = []
             for r in _pre_results:
-                if isinstance(r, dict) and r.get("context"):
-                    _ctx_parts.append(str(r["context"]))
+                if isinstance(r, dict):
+                    if r.get("context"):
+                        _ctx_parts.append(str(r["context"]))
+                    if r.get("headers") and isinstance(r["headers"], dict):
+                        _plugin_turn_headers.update(r["headers"])
                 elif isinstance(r, str) and r.strip():
                     _ctx_parts.append(r)
             if _ctx_parts:
                 _plugin_turn_context = "\n\n".join(_ctx_parts)
         except Exception as exc:
             logger.warning("pre_llm_call hook failed: %s", exc)
+        self._plugin_turn_headers = _plugin_turn_headers or None
 
         # Main conversation loop
         api_call_count = 0

@@ -1,0 +1,14 @@
+name: opper-tracing
+version: "1.0.0"
+description: >
+  Creates an Opper span per conversation turn when using the Opper provider.
+  Each turn appears as a named trace in the Opper UI with the user message as
+  input and the assistant response as output.
+author: Opper
+requires_env:
+  - OPPER_API_KEY
+provides_hooks:
+  - on_session_start
+  - pre_llm_call
+  - pre_tool_call
+  - post_tool_call
