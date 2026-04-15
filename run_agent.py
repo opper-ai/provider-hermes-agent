@@ -918,6 +918,11 @@ class AIAgent:
                     }
                 elif "portal.qwen.ai" in effective_base.lower():
                     client_kwargs["default_headers"] = _qwen_portal_headers()
+                elif self.provider == "opper" or "api.opper.ai" in effective_base.lower():
+                    client_kwargs["default_headers"] = {
+                        "User-Agent": "opper-hermes",
+                        "X-Opper-Name": "hermes-turn",
+                    }
             else:
                 # No explicit creds — use the centralized provider router
                 from agent.auxiliary_client import resolve_provider_client

@@ -111,6 +111,11 @@ _DEFAULT_PROVIDER_MODELS = {
         "Qwen/Qwen3-Coder-480B-A35B-Instruct", "deepseek-ai/DeepSeek-R1-0528",
         "deepseek-ai/DeepSeek-V3.2", "moonshotai/Kimi-K2.5",
     ],
+    "opper": [
+        "anthropic/claude-opus-4.5", "anthropic/claude-sonnet-4.5",
+        "openai/gpt-4o", "openai/gpt-4o-mini",
+        "google/gemini-2.5-pro", "google/gemini-2.5-flash",
+    ],
 }
 
 
@@ -644,6 +649,7 @@ def setup_model_provider(config: dict, *, quick: bool = False):
     # Delegate to the shared hermes model flow — handles provider picker,
     # credential prompting, model selection, and config persistence.
     from hermes_cli.main import select_provider_and_model
+    # Keep setup aligned with the actual runtime resolver the vision tools use.
     try:
         select_provider_and_model()
     except (SystemExit, KeyboardInterrupt):

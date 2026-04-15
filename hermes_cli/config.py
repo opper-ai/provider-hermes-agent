@@ -974,6 +974,21 @@ OPTIONAL_ENV_VARS = {
         "category": "provider",
         "advanced": True,
     },
+    "OPPER_API_KEY": {
+        "description": "Opper AI API key",
+        "prompt": "Opper API key",
+        "url": "https://platform.opper.ai",
+        "password": True,
+        "category": "provider",
+    },
+    "OPPER_BASE_URL": {
+        "description": "Opper base URL override (default: https://api.opper.ai/v3/compat)",
+        "prompt": "Opper base URL (leave empty for default)",
+        "url": None,
+        "password": False,
+        "category": "provider",
+        "advanced": True,
+    },
 
     # ── Tool API keys ──
     "EXA_API_KEY": {
