@@ -104,6 +104,7 @@ class TestProviderRegistry:
     def test_opper_env_vars(self):
         pconfig = PROVIDER_REGISTRY["opper"]
         assert pconfig.api_key_env_vars == ("OPPER_API_KEY",)
+        assert pconfig.base_url_env_var == "OPPER_BASE_URL"
 
     def test_base_urls(self):
         assert PROVIDER_REGISTRY["copilot"].inference_base_url == "https://api.githubcopilot.com"
@@ -136,7 +137,7 @@ PROVIDER_ENV_VARS = (
     "KIMI_API_KEY", "KIMI_BASE_URL", "MINIMAX_API_KEY", "MINIMAX_CN_API_KEY",
     "AI_GATEWAY_API_KEY", "AI_GATEWAY_BASE_URL",
     "KILOCODE_API_KEY", "KILOCODE_BASE_URL",
-    "OPPER_API_KEY",
+    "OPPER_API_KEY", "OPPER_BASE_URL",
     "DASHSCOPE_API_KEY", "OPENCODE_ZEN_API_KEY", "OPENCODE_GO_API_KEY",
     "NOUS_API_KEY", "GITHUB_TOKEN", "GH_TOKEN",
     "OPENAI_BASE_URL", "HERMES_COPILOT_ACP_COMMAND", "COPILOT_CLI_PATH",
