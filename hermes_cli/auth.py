@@ -280,6 +280,7 @@ PROVIDER_REGISTRY: Dict[str, ProviderConfig] = {
         auth_type="api_key",
         inference_base_url="https://api.opper.ai/v3/compat",
         api_key_env_vars=("OPPER_API_KEY",),
+        base_url_env_var="OPPER_BASE_URL",
     ),
 }
 

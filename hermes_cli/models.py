@@ -277,6 +277,14 @@ _PROVIDER_MODELS: dict[str, list[str]] = {
         "google/gemini-3-pro-preview",
         "google/gemini-3-flash-preview",
     ],
+    "opper": [
+        "anthropic/claude-opus-4.5",
+        "anthropic/claude-sonnet-4.5",
+        "openai/gpt-4o",
+        "openai/gpt-4o-mini",
+        "google/gemini-2.5-pro",
+        "google/gemini-2.5-flash",
+    ],
     # Alibaba DashScope Coding platform (coding-intl) — default endpoint.
     # Supports Qwen models + third-party providers (GLM, Kimi, MiniMax).
     # Users with classic DashScope keys should override DASHSCOPE_BASE_URL
